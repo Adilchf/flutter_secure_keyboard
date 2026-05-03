@@ -426,21 +426,9 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
       height: kKeyInputMonitorHeight,
       child: Row(
         children: [
-          Expanded(
-            child: Text(
-              secureText,
-              style: secureTextStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Text(lengthText, style: widget.keyTextStyle),
-          ),
-          if (widget.obscureText) _buildViewsButton(),
-          _buildCloseButton()
-        ],
+  const Spacer(),
+  _buildCloseButton(),
+],
       ),
     );
   }
