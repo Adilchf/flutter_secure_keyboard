@@ -361,7 +361,9 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
       ),
     );
 
-    return WillPopScope(
+    return Directionality(
+  textDirection: TextDirection.ltr,
+  child: WillPopScope(
       onWillPop: () async {
         widget.onCloseKeyPressed();
         return false;
@@ -379,7 +381,7 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
           ],
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildKeyInputMonitor() {
