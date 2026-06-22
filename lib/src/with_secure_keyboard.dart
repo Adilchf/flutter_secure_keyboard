@@ -200,6 +200,7 @@ class _WithSecureKeyboardState extends State<WithSecureKeyboard> {
     final onCloseKeyPressed = widget.controller._onCloseKeyPressed;
 
     return SecureKeyboard(
+      key: widget.controller.keyboardKey,
       type: widget.controller._type,
       initText: widget.controller._initText,
       hintText: widget.controller._hintText,
@@ -317,6 +318,11 @@ class SecureKeyboardController extends ChangeNotifier {
   /// Whether the secure keyboard is showing.
   bool get isShowing => _isShowing;
 
+  Key? _keyboardKey;
+
+  /// Unique key for the secure keyboard instance, regenerated on show.
+  Key? get keyboardKey => _keyboardKey;
+
   late SecureKeyboardType _type;
   FocusNode? _focusNode;
   String? _initText;
@@ -378,6 +384,7 @@ class SecureKeyboardController extends ChangeNotifier {
     _onCharCodesChanged = onCharCodesChanged;
     _onDoneKeyPressed = onDoneKeyPressed;
     _onCloseKeyPressed = onCloseKeyPressed;
+    _keyboardKey = UniqueKey();
     _isShowing = true;
     notifyListeners();
   }
@@ -396,6 +403,7 @@ class SecureKeyboardController extends ChangeNotifier {
     _onDoneKeyPressed = null;
     _onCloseKeyPressed = null;
     _isShowing = false;
+    _keyboardKey = null;
     notifyListeners();
   }
 }
