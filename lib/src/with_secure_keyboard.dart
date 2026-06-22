@@ -343,7 +343,6 @@ class SecureKeyboardController extends ChangeNotifier {
   ValueChanged<List<int>>? _onDoneKeyPressed;
   VoidCallback? _onCloseKeyPressed;
 
-  /// Show secure keyboard.
   void show({
     required SecureKeyboardType type,
     FocusNode? focusNode,
@@ -366,6 +365,10 @@ class SecureKeyboardController extends ChangeNotifier {
   }) {
     assert(obscuringCharacter.isNotEmpty);
 
+    if (!_isShowing || _focusNode != focusNode) {
+      _keyboardKey = UniqueKey();
+    }
+
     _type = type;
     _focusNode = focusNode;
     _initText = initText;
@@ -384,7 +387,6 @@ class SecureKeyboardController extends ChangeNotifier {
     _onCharCodesChanged = onCharCodesChanged;
     _onDoneKeyPressed = onDoneKeyPressed;
     _onCloseKeyPressed = onCloseKeyPressed;
-    _keyboardKey = UniqueKey();
     _isShowing = true;
     notifyListeners();
   }
