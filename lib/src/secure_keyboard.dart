@@ -329,7 +329,35 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
   @override
   void didUpdateWidget(covariant SecureKeyboard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _initWidgetState();
+
+    if (widget.type != oldWidget.type ||
+        widget.shuffleNumericKey != oldWidget.shuffleNumericKey) {
+      _isWeakShiftEnabled = false;
+      _isStrongShiftEnabled = widget.alwaysCaps == true;
+      _isSpecialCharsEnabled = false;
+      _definedKeyRows.clear();
+      final keyGenerator = SecureKeyboardKeyGenerator.instance;
+      if (widget.type == SecureKeyboardType.NUMERIC) {
+        _definedKeyRows
+            .addAll(keyGenerator.getNumericKeyRows(widget.shuffleNumericKey));
+      } else {
+        _definedKeyRows.addAll(
+            keyGenerator.getAlphanumericKeyRows(widget.shuffleNumericKey));
+      }
+    }
+
+    if (widget.alwaysCaps != oldWidget.alwaysCaps) {
+      _isStrongShiftEnabled = widget.alwaysCaps == true;
+    }
+
+    if (widget.initText != oldWidget.initText) {
+      _charCodes.clear();
+      final initText = widget.initText;
+      if (initText != null) {
+        _charCodes.addAll(initText.codeUnits);
+      }
+      _notifyCharCodesChanged();
+    }
   }
 
   @override
