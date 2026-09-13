@@ -1,3 +1,7 @@
+## 4.1.0
+
+* [**FEAT**] Add `shuffleAlphaNumericKey` option to independently shuffle the position of the alphanumeric keys.
+
 ## 4.0.0
 
 * [**FEAT**] Support AGP 8

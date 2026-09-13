@@ -116,6 +116,10 @@ class SecureKeyboard extends StatefulWidget {
   /// Default value is `true`.
   final bool shuffleNumericKey;
 
+  /// Whether to shuffle the position of the alphanumeric keys.
+  /// Default value is `true`.
+  final bool shuffleAlphaNumericKey;
+
   /// Whether to hide the key input monitor.
   /// Default value is `false`.
   final bool hideKeyInputMonitor;
@@ -188,6 +192,7 @@ class SecureKeyboard extends StatefulWidget {
     this.alwaysCaps = false,
     this.obscureText = true,
     this.shuffleNumericKey = true,
+    this.shuffleAlphaNumericKey = true,
     this.hideKeyInputMonitor = false,
     this.height = kKeyboardDefaultHeight,
     this.keyRadius = kKeyboardKeyDefaultRadius,
@@ -244,7 +249,7 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
           .addAll(keyGenerator.getNumericKeyRows(widget.shuffleNumericKey));
     } else {
       _definedKeyRows.addAll(
-          keyGenerator.getAlphanumericKeyRows(widget.shuffleNumericKey));
+          keyGenerator.getAlphanumericKeyRows(widget.shuffleAlphaNumericKey));
     }
     _specialKeyRows
         .addAll(SecureKeyboardKeyGenerator.instance.getSpecialCharsKeyRows());
@@ -331,7 +336,8 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.type != oldWidget.type ||
-        widget.shuffleNumericKey != oldWidget.shuffleNumericKey) {
+        widget.shuffleNumericKey != oldWidget.shuffleNumericKey ||
+        widget.shuffleAlphaNumericKey != oldWidget.shuffleAlphaNumericKey) {
       _isWeakShiftEnabled = false;
       _isStrongShiftEnabled = widget.alwaysCaps == true;
       _isSpecialCharsEnabled = false;
@@ -342,7 +348,7 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
             .addAll(keyGenerator.getNumericKeyRows(widget.shuffleNumericKey));
       } else {
         _definedKeyRows.addAll(
-            keyGenerator.getAlphanumericKeyRows(widget.shuffleNumericKey));
+            keyGenerator.getAlphanumericKeyRows(widget.shuffleAlphaNumericKey));
       }
     }
 

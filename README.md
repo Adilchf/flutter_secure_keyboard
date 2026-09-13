@@ -178,6 +178,7 @@ class _WithSecureKeyboardExampleState extends State<WithSecureKeyboardExample> {
 | `alwaysCaps` | Whether to always display uppercase characters. <br> Default value is `false`. |
 | `obscureText` | Whether to hide input text as secure characters. <br> Default value is `true`. |
 | `shuffleNumericKey` | Whether to shuffle the position of the numeric keys. <br> Default value is `true`. |
+| `shuffleAlphaNumericKey` | Whether to shuffle the position of the alphanumeric keys. <br> Default value is `true`. |
 | `hideKeyInputMonitor` | Whether to hide the key input monitor. <br> Default value is `false`. |
 | `disableKeyBubble` | Whether to disable the key bubble. <br> Default value is `false`. |
 | `onKeyPressed` | Called when the key is pressed. |
