@@ -19,7 +19,7 @@ const double kKeyboardDefaultHeight = 250.0;
 const double kKeyboardKeyDefaultRadius = 6.0;
 
 /// The default spacing of the keyboard key.
-const double kKeyboardKeyDefaultSpacing = 2.0;
+const double kKeyboardKeyDefaultSpacing = 1.2;
 
 /// The delay at which the entered text is erased when holding backspace.
 const int kBackspaceEventDelay = 100;
