@@ -13,13 +13,13 @@ import 'package:flutter_secure_keyboard/src/secure_keyboard_key.dart';
 const double kKeyInputMonitorHeight = 50.0;
 
 /// The default height of the keyboard.
-const double kKeyboardDefaultHeight = 280.0;
+const double kKeyboardDefaultHeight = 250.0;
 
 /// The default radius of the keyboard key.
 const double kKeyboardKeyDefaultRadius = 6.0;
 
 /// The default spacing of the keyboard key.
-const double kKeyboardKeyDefaultSpacing = 5.0;
+const double kKeyboardKeyDefaultSpacing = 2.0;
 
 /// The delay at which the entered text is erased when holding backspace.
 const int kBackspaceEventDelay = 100;
