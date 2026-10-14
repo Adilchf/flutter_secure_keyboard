@@ -232,10 +232,12 @@ class _WithSecureKeyboardState extends State<WithSecureKeyboard> {
         widget.controller.hide();
         onDoneKeyPressed?.call(charCodes);
       },
-      onCloseKeyPressed: () {
-        widget.controller.hide();
-        onCloseKeyPressed?.call();
-      },
+      onCloseKeyPressed: onCloseKeyPressed != null
+          ? () {
+              widget.controller.hide();
+              onCloseKeyPressed();
+            }
+          : null,
       onStringKeyTouchStart: (keyText, position, constraints) {
         if (widget.controller._disableKeyBubble) return;
 
