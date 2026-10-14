@@ -13,13 +13,13 @@ import 'package:flutter_secure_keyboard/src/secure_keyboard_key.dart';
 const double kKeyInputMonitorHeight = 50.0;
 
 /// The default height of the keyboard.
-const double kKeyboardDefaultHeight = 280.0;
+const double kKeyboardDefaultHeight = 216.0;
 
 /// The default radius of the keyboard key.
-const double kKeyboardKeyDefaultRadius = 12.0;
+const double kKeyboardKeyDefaultRadius = 6.0;
 
 /// The default spacing of the keyboard key.
-const double kKeyboardKeyDefaultSpacing = 6.0;
+const double kKeyboardKeyDefaultSpacing = 5.0;
 
 /// The delay at which the entered text is erased when holding backspace.
 const int kBackspaceEventDelay = 100;
@@ -50,7 +50,7 @@ const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
 
 /// The default padding of the keyboard.
 const EdgeInsetsGeometry kKeyboardDefaultPadding =
-    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0);
+    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0);
 
 /// Callback function when the string key touch is started.
 typedef StringKeyTouchStartCallback = void Function(
@@ -506,26 +506,40 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
   }
 
   List<Widget> _buildKeyboardKey(List<List<SecureKeyboardKey>> keyRows) {
+    final rowHeight = widget.height / keyRows.length;
     return List.generate(keyRows.length, (int rowNum) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(
-          keyRows[rowNum].length,
-          (int keyNum) {
-            final key = keyRows[rowNum][keyNum];
-
-            switch (key.type) {
-              case SecureKeyboardKeyType.STRING:
-                return _buildStringKey(key, keyRows.length);
-              case SecureKeyboardKeyType.ACTION:
-                return _buildActionKey(key, keyRows.length);
-              default:
-                throw Exception('Unknown key type.');
-            }
-          },
+      final rowKeys = keyRows[rowNum];
+      return SizedBox(
+        height: rowHeight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: _buildRowKeys(rowKeys, rowNum, keyRows.length),
         ),
       );
     });
+  }
+
+  List<Widget> _buildRowKeys(
+      List<SecureKeyboardKey> rowKeys, int rowNum, int totalRows) {
+    final widgets = <Widget>[];
+    for (int i = 0; i < rowKeys.length; i++) {
+      final key = rowKeys[i];
+      switch (key.type) {
+        case SecureKeyboardKeyType.STRING:
+          widgets.add(_buildStringKey(key, totalRows));
+          break;
+        case SecureKeyboardKeyType.ACTION:
+          widgets.add(_buildActionKey(key, rowNum, totalRows));
+          break;
+        default:
+          throw Exception('Unknown key type.');
+      }
+      // Add spacing between keys (not after the last one)
+      if (i < rowKeys.length - 1) {
+        widgets.add(SizedBox(width: widget.keySpacing));
+      }
+    }
+    return widgets;
   }
 
   Widget _buildStringKey(SecureKeyboardKey key, int keyRowsLength) {
@@ -537,41 +551,43 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
     final keyData = Text(keyText, style: widget.keyTextStyle);
     final widgetKey = GlobalKey(debugLabel: 'StringKey');
 
-    return Expanded(
-      child: SizedBox(
+    return Flexible(
+      flex: 1,
+      child: _KeyboardKeyLayout(
         key: widgetKey,
-        height: widget.height / keyRowsLength,
-        child: _KeyboardKeyLayout(
-          margin: EdgeInsets.all(widget.keySpacing),
-          borderRadius: BorderRadius.circular(widget.keyRadius),
-          color: widget.stringKeyColor,
-          onTouchStart: (constraints) {
-            if (widget.type != SecureKeyboardType.ALPHA_NUMERIC) return;
-            if (widget.onStringKeyTouchStart == null) return;
+        margin: EdgeInsets.zero,
+        borderRadius: BorderRadius.circular(widget.keyRadius),
+        color: widget.stringKeyColor,
+        onTouchStart: (constraints) {
+          if (widget.type != SecureKeyboardType.ALPHA_NUMERIC) return;
+          if (widget.onStringKeyTouchStart == null) return;
 
-            final renderObj = widgetKey.currentContext?.findRenderObject();
-            if (renderObj is RenderBox) {
-              final offset = renderObj.localToGlobal(Offset.zero);
-              widget.onStringKeyTouchStart?.call(keyText, offset, constraints);
-            }
-          },
-          onTouchEnd: (constraints) {
-            _onKeyPressed(key);
+          final renderObj = widgetKey.currentContext?.findRenderObject();
+          if (renderObj is RenderBox) {
+            final offset = renderObj.localToGlobal(Offset.zero);
+            widget.onStringKeyTouchStart?.call(keyText, offset, constraints);
+          }
+        },
+        onTouchEnd: (constraints) {
+          _onKeyPressed(key);
 
-            if (widget.type != SecureKeyboardType.ALPHA_NUMERIC) return;
-            widget.onStringKeyTouchEnd?.call();
-          },
-          child: keyData,
-        ),
+          if (widget.type != SecureKeyboardType.ALPHA_NUMERIC) return;
+          widget.onStringKeyTouchEnd?.call();
+        },
+        child: keyData,
       ),
     );
   }
 
-  Widget _buildActionKey(SecureKeyboardKey key, int keyRowsLength) {
+  Widget _buildActionKey(
+      SecureKeyboardKey key, int rowNum, int keyRowsLength) {
     Widget keyData;
+    double flex = 1.0;
+
     switch (key.action ?? SecureKeyboardKeyAction.BLANK) {
       case SecureKeyboardKeyAction.BACKSPACE:
-        keyData = Icon(Icons.backspace, color: widget.keyTextStyle.color);
+        keyData = Icon(Icons.backspace, color: widget.keyTextStyle.color, size: 22);
+        flex = 1.3; // Wider than normal keys
         break;
       case SecureKeyboardKeyAction.SHIFT:
         keyData = Icon(
@@ -579,21 +595,25 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
           color: (_isWeakShiftEnabled && !_isStrongShiftEnabled)
               ? widget.activatedKeyColor ?? widget.doneKeyColor
               : widget.keyTextStyle.color,
+          size: 22,
         );
+        flex = 1.3; // Wider than normal keys
         break;
       case SecureKeyboardKeyAction.CLEAR:
         String? keyText = widget.clearKeyText;
         if (keyText == null || keyText.isEmpty) {
           keyText = (Platform.localeName == 'ko_KR') ? '초기화' : 'Clear';
         }
-        keyData = Text(keyText, style: widget.keyTextStyle);
+        keyData = Text(keyText, style: widget.keyTextStyle.copyWith(fontSize: 14));
+        flex = 1.1;
         break;
       case SecureKeyboardKeyAction.DONE:
         String? keyText = widget.doneKeyText;
         if (keyText == null || keyText.isEmpty) {
           keyText = (Platform.localeName == 'ko_KR') ? '입력완료' : 'Done';
         }
-        keyData = Text(keyText, style: widget.keyTextStyle);
+        keyData = Text(keyText, style: widget.keyTextStyle.copyWith(fontSize: 14, color: Colors.white));
+        flex = 1.1;
         break;
       case SecureKeyboardKeyAction.SPECIAL_CHARACTERS:
         keyData = Text(
@@ -604,11 +624,12 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
                   ? 'ABC'
                   : 'abc')
               : '!@#',
-          style: widget.keyTextStyle,
+          style: widget.keyTextStyle.copyWith(fontSize: 14),
         );
+        flex = 1.1;
         break;
       case SecureKeyboardKeyAction.BLANK:
-        return Expanded(child: SizedBox.shrink());
+        return const SizedBox.shrink(); // Don't take space
     }
 
     Color keyColor;
@@ -645,18 +666,17 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
       };
     }
 
-    return Expanded(
-      child: SizedBox(
-        height: widget.height / keyRowsLength,
-        child: _KeyboardKeyLayout(
-          margin: EdgeInsets.all(widget.keySpacing),
-          borderRadius: BorderRadius.circular(widget.keyRadius),
-          color: keyColor,
-          onTap: () => _onKeyPressed(key),
-          onLongPressStart: onLongPressStart,
-          onLongPressEnd: onLongPressEnd,
-          child: keyData,
-        ),
+    return Flexible(
+      flex: (flex * 10).round(),
+      fit: FlexFit.tight,
+      child: _KeyboardKeyLayout(
+        margin: EdgeInsets.zero,
+        borderRadius: BorderRadius.circular(widget.keyRadius),
+        color: keyColor,
+        onTap: () => _onKeyPressed(key),
+        onLongPressStart: onLongPressStart,
+        onLongPressEnd: onLongPressEnd,
+        child: keyData,
       ),
     );
   }
