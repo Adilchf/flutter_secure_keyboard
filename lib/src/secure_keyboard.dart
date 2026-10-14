@@ -13,10 +13,10 @@ import 'package:flutter_secure_keyboard/src/secure_keyboard_key.dart';
 const double kKeyInputMonitorHeight = 50.0;
 
 /// The default height of the keyboard.
-const double kKeyboardDefaultHeight = 250.0;
+const double kKeyboardDefaultHeight = 280.0;
 
 /// The default radius of the keyboard key.
-const double kKeyboardKeyDefaultRadius = 6.0;
+const double kKeyboardKeyDefaultRadius = 4.0;
 
 /// The default spacing of the keyboard key.
 const double kKeyboardKeyDefaultSpacing = 1.2;
@@ -50,7 +50,7 @@ const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
 
 /// The default padding of the keyboard.
 const EdgeInsetsGeometry kKeyboardDefaultPadding =
-    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0);
+    const EdgeInsets.symmetric(horizontal: 5.0);
 
 /// Callback function when the string key touch is started.
 typedef StringKeyTouchStartCallback = void Function(
