@@ -223,13 +223,11 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
 
   Timer? _backspaceEventGenerator;
 
-  bool _isViewEnabled = false;
   bool _isWeakShiftEnabled = false;
   bool _isStrongShiftEnabled = false;
   bool _isSpecialCharsEnabled = false;
 
   void _initWidgetState() {
-    _isViewEnabled = false;
     _isWeakShiftEnabled = false;
     _isStrongShiftEnabled = widget.alwaysCaps == true;
     _isSpecialCharsEnabled = false;
@@ -368,22 +366,9 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
 
   @override
   Widget build(BuildContext context) {
-    double height;
-    Widget keyInputMonitor;
-    if (widget.hideKeyInputMonitor) {
-      height = widget.height + 5.0;
-      keyInputMonitor = SizedBox.shrink();
-    } else {
-      height = widget.height + kKeyInputMonitorHeight;
-      keyInputMonitor = Padding(
-        padding: widget.keyInputMonitorPadding,
-        child: _buildKeyInputMonitor(),
-      );
-    }
-
     // safe area
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
-    height += bottomPadding;
+    final double height = widget.height + bottomPadding;
 
     final keyRows = _isSpecialCharsEnabled ? _specialKeyRows : _definedKeyRows;
     final keyboard = Padding(
@@ -396,105 +381,25 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
     );
 
     return Directionality(
-  textDirection: TextDirection.ltr,
-  child: WillPopScope(
-      onWillPop: () async {
-        widget.onCloseKeyPressed();
-        return false;
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: height,
-        color: widget.backgroundColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            keyInputMonitor,
-            keyboard,
-          ],
-        ),
-      ),
-    ),);
-  }
-
-  Widget _buildKeyInputMonitor() {
-    return StreamBuilder<List<int>>(
-      stream: _charCodesController.stream.asBroadcastStream(
-        onCancel: (subscription) => subscription.cancel(),
-      ),
-      initialData: _charCodes,
-      builder: (context, snapshot) =>
-          _buildKeyInputMonitorLayout(snapshot.data ?? _charCodes),
-    );
-  }
-
-  Widget _buildKeyInputMonitorLayout(List<int> charCodes) {
-    String secureText;
-    TextStyle secureTextStyle;
-    if (charCodes.isNotEmpty) {
-      if (widget.obscureText && !_isViewEnabled) {
-        secureText = '';
-        for (var i = 0; i < charCodes.length; i++) {
-          if (i == charCodes.length - 1) {
-            secureText += String.fromCharCode(charCodes[i]);
-          } else {
-            secureText += widget.obscuringCharacter;
+      textDirection: TextDirection.ltr,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop) {
+            widget.onCloseKeyPressed();
           }
-        }
-      } else {
-        secureText = String.fromCharCodes(charCodes);
-      }
-      secureTextStyle = widget.inputTextStyle;
-    } else {
-      secureText = widget.hintText ?? '';
-      secureTextStyle = widget.inputTextStyle
-          .copyWith(color: widget.inputTextStyle.color?.withOpacity(0.5));
-    }
-
-    String? lengthSymbol = widget.inputTextLengthSymbol;
-    if (lengthSymbol == null) {
-      lengthSymbol = (Platform.localeName == 'ko_KR') ? '자' : 'digit';
-    }
-    final lengthText = '${charCodes.length}$lengthSymbol';
-
-    return SizedBox(
-      height: kKeyInputMonitorHeight,
-
-    );
-  }
-
-  Widget _buildViewsButton() {
-    return SizedBox(
-      width: kKeyInputMonitorHeight / 1.2,
-      height: kKeyInputMonitorHeight / 1.2,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(2.0),
-          onTap: () {},
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onPanDown: (_) => setState(() => _isViewEnabled = true),
-            onPanEnd: (_) => setState(() => _isViewEnabled = false),
-            onPanCancel: () => setState(() => _isViewEnabled = false),
-            child: Icon(Icons.remove_red_eye, color: widget.keyTextStyle.color),
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: height,
+          color: widget.backgroundColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: keyboard),
+            ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCloseButton() {
-    return SizedBox(
-      width: kKeyInputMonitorHeight / 1.2,
-      height: kKeyInputMonitorHeight / 1.2,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(2.0),
-          child: Icon(Icons.close, color: widget.keyTextStyle.color),
-          onTap: widget.onCloseKeyPressed,
         ),
       ),
     );
