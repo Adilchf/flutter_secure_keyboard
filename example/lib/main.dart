@@ -32,11 +32,16 @@ class _WithSecureKeyboardExampleState extends State<WithSecureKeyboardExample> {
   Widget build(BuildContext context) {
     // Set the WithSecureKeyboard widget as the top-level widget
     // in the build function so that the secure keyboard works properly.
+    // The library now uses iOS-style defaults (light grey background, rounded keys, etc.)
     return WithSecureKeyboard(
       controller: _secureKeyboardController,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('flutter_secure_keyboard'),
+          backgroundColor: Colors.white,
+          foregroundColor: Color(0xFF1D1D1F),
+          elevation: 0.5,
         ),
         body: _buildContentView(),
       ),
@@ -59,13 +64,18 @@ class _WithSecureKeyboardExampleState extends State<WithSecureKeyboardExample> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Password'),
+        Text('Password', style: TextStyle(color: Color(0xFF1D1D1F))),
         TextFormField(
           controller: _passwordEditor,
           focusNode: _passwordTextFieldFocusNode,
           // We recommended to set false to prevent the software keyboard from opening.
           enableInteractiveSelection: false,
           obscureText: true,
+          style: TextStyle(color: Color(0xFF1D1D1F)),
+          decoration: InputDecoration(
+            hintText: 'password',
+            hintStyle: TextStyle(color: Color(0xFF1D1D1F).withOpacity(0.5)),
+          ),
           onTap: () {
             _secureKeyboardController.show(
               type: SecureKeyboardType.ALPHA_NUMERIC,
@@ -87,13 +97,18 @@ class _WithSecureKeyboardExampleState extends State<WithSecureKeyboardExample> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('PinCode'),
+        Text('PinCode', style: TextStyle(color: Color(0xFF1D1D1F))),
         TextFormField(
           controller: _pinCodeEditor,
           focusNode: _pinCodeTextFieldFocusNode,
           // We recommended to set false to prevent the software keyboard from opening.
           enableInteractiveSelection: false,
           obscureText: true,
+          style: TextStyle(color: Color(0xFF1D1D1F)),
+          decoration: InputDecoration(
+            hintText: 'pinCode',
+            hintStyle: TextStyle(color: Color(0xFF1D1D1F).withOpacity(0.5)),
+          ),
           onTap: () {
             _secureKeyboardController.show(
               type: SecureKeyboardType.NUMERIC,

@@ -16,33 +16,33 @@ const double kKeyInputMonitorHeight = 50.0;
 const double kKeyboardDefaultHeight = 280.0;
 
 /// The default radius of the keyboard key.
-const double kKeyboardKeyDefaultRadius = 4.0;
+const double kKeyboardKeyDefaultRadius = 12.0;
 
 /// The default spacing of the keyboard key.
-const double kKeyboardKeyDefaultSpacing = 1.2;
+const double kKeyboardKeyDefaultSpacing = 6.0;
 
 /// The delay at which the entered text is erased when holding backspace.
 const int kBackspaceEventDelay = 100;
 
-/// The default background color of the keyboard.
-const Color kKeyboardDefaultBackgroundColor = const Color(0xFF0A0A0A);
+/// The default background color of the keyboard (iOS light grey).
+const Color kKeyboardDefaultBackgroundColor = const Color(0xFFD1D1D6);
 
-/// The default color of the string key.
-const Color kKeyboardDefaultStringKeyColor = const Color(0xFF313131);
+/// The default color of the string key (iOS white).
+const Color kKeyboardDefaultStringKeyColor = Colors.white;
 
-/// The default color of the action key.
-const Color kKeyboardDefaultActionKeyColor = const Color(0xFF222222);
+/// The default color of the action key (iOS light grey).
+const Color kKeyboardDefaultActionKeyColor = const Color(0xFFE0E0E5);
 
-/// The default color of the done key.
-const Color kKeyboardDefaultDoneKeyColor = const Color(0xFF1C7CDC);
+/// The default color of the done key (iOS blue).
+const Color kKeyboardDefaultDoneKeyColor = const Color(0xFF007AFF);
 
-/// The default text style of the text inside the keyboard key.
+/// The default text style of the text inside the keyboard key (iOS dark text).
 const TextStyle kKeyboardDefaultKeyTextStyle = const TextStyle(
-    color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w500);
+    color: Color(0xFF1D1D1F), fontSize: 20.0, fontWeight: FontWeight.w400);
 
-/// The default text style of the text inside the key input monitor.
+/// The default text style of the text inside the key input monitor (iOS dark text).
 const TextStyle kKeyboardDefaultInputTextStyle = const TextStyle(
-    color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w500);
+    color: Color(0xFF1D1D1F), fontSize: 22.0, fontWeight: FontWeight.w400);
 
 /// The default padding of the key input monitor.
 const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
@@ -50,7 +50,7 @@ const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
 
 /// The default padding of the keyboard.
 const EdgeInsetsGeometry kKeyboardDefaultPadding =
-    const EdgeInsets.symmetric(horizontal: 5.0);
+    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0);
 
 /// Callback function when the string key touch is started.
 typedef StringKeyTouchStartCallback = void Function(
