@@ -16,10 +16,10 @@ const double kKeyInputMonitorHeight = 50.0;
 const double kKeyboardDefaultHeight = 240.0;
 
 /// The default radius of the keyboard key.
-const double kKeyboardKeyDefaultRadius = 6.0;
+const double kKeyboardKeyDefaultRadius = 4.0;
 
 /// The default spacing of the keyboard key.
-const double kKeyboardKeyDefaultSpacing = 5.0;
+const double kKeyboardKeyDefaultSpacing = 1.2;
 
 /// The delay at which the entered text is erased when holding backspace.
 const int kBackspaceEventDelay = 100;
@@ -46,11 +46,11 @@ const TextStyle kKeyboardDefaultInputTextStyle = const TextStyle(
 
 /// The default padding of the key input monitor.
 const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
-    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0);
+    const EdgeInsets.only(left: 10.0, right: 5.0);
 
 /// The default padding of the keyboard.
 const EdgeInsetsGeometry kKeyboardDefaultPadding =
-    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0);
+    const EdgeInsets.symmetric(horizontal: 5.0);
 
 /// Callback function when the string key touch is started.
 typedef StringKeyTouchStartCallback = void Function(
