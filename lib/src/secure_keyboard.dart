@@ -13,7 +13,7 @@ import 'package:flutter_secure_keyboard/src/secure_keyboard_key.dart';
 const double kKeyInputMonitorHeight = 50.0;
 
 /// The default height of the keyboard.
-const double kKeyboardDefaultHeight = 216.0;
+const double kKeyboardDefaultHeight = 250.0;
 
 /// The default radius of the keyboard key.
 const double kKeyboardKeyDefaultRadius = 6.0;
