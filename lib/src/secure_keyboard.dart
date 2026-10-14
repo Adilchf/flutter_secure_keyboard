@@ -458,14 +458,6 @@ class _SecureKeyboardState extends State<SecureKeyboard> {
     }
     final lengthText = '${charCodes.length}$lengthSymbol';
 
-    return SizedBox(
-      height: kKeyInputMonitorHeight,
-      child: Row(
-        children: [
-          const Spacer(),
-        ],
-      ),
-    );
   }
 
   Widget _buildViewsButton() {
