@@ -38,11 +38,11 @@ const Color kKeyboardDefaultDoneKeyColor = const Color(0xFF007AFF);
 
 /// The default text style of the text inside the keyboard key (iOS dark text).
 const TextStyle kKeyboardDefaultKeyTextStyle = const TextStyle(
-    color: Color(0xFF1D1D1F), fontSize: 20.0, fontWeight: FontWeight.w400);
+    color: Color(0xFF1D1D1F), fontSize: 17.0, fontWeight: FontWeight.w500);
 
 /// The default text style of the text inside the key input monitor (iOS dark text).
 const TextStyle kKeyboardDefaultInputTextStyle = const TextStyle(
-    color: Color(0xFF1D1D1F), fontSize: 22.0, fontWeight: FontWeight.w400);
+    color: Color(0xFF1D1D1F), fontSize: 17.0, fontWeight: FontWeight.w500);
 
 /// The default padding of the key input monitor.
 const EdgeInsetsGeometry kKeyInputMonitorDefaultPadding =
