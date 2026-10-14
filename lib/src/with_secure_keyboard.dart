@@ -295,15 +295,8 @@ class _WithSecureKeyboardState extends State<WithSecureKeyboard> {
         height: _keyBubbleHeight,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: widget.stringKeyColor, // Use string key color (white) for key bubble
+          color: widget.actionKeyColor,
           borderRadius: BorderRadius.circular(widget.keyRadius),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: Offset(0, 2),
-            ),
-          ],
         ),
         child: Text(_keyBubbleText ?? '', style: keyTextStyle),
       ),
